@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -18,7 +17,7 @@ class CartPage extends StatelessWidget {
           )*/
       ),
       body: Column(
-        children: [_CartList().p32().expand(), Divider(), _CartTotal()],
+        children: [_CartList().p32().expand(), const Divider(), _CartTotal()],
       ),
     );
   }
@@ -33,11 +32,16 @@ class _CartTotal extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          "\$${cartModel.totalPrice}"
-              .text
-              .xl5
-              .color(context.theme.accentColor)
-              .make(),
+          VxBuilder(//Use this to redraw/rebuild only that part
+            mutations: const {RemoveMutation},
+            builder: (context, _, __) {
+              return "\$${cartModel.totalPrice}"
+                  .text
+                  .xl5
+                  .color(context.theme.accentColor)
+                  .make();
+            },
+          ),
           30.widthBox,
           ElevatedButton(
             onPressed: () {
@@ -58,19 +62,19 @@ class _CartTotal extends StatelessWidget {
 class _CartList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    VxState.watch(context, on: [RemoveMutation]);
     final CartModel cartModel = (VxState.store as VKStore).cartModel;
     return cartModel.items.isEmpty
         ? "Nothing to show".text.xl3.makeCentered()
         : ListView.builder(
             itemCount: cartModel.items.length,
             itemBuilder: (context, index) => ListTile(
-              leading: Icon(Icons.done),
+              leading: const Icon(Icons.done),
               trailing: IconButton(
-                icon: Icon(Icons.remove_circle_outline),
+                icon: const Icon(Icons.remove_circle_outline),
                 onPressed: () {
                   if (cartModel.items[index] != null) {
-                    cartModel.remove(cartModel.items[index]!);
-                    // setState(() {});
+                    RemoveMutation(cartModel.items[index]!);
                   }
                 },
               ),
