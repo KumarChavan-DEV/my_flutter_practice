@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: (CatalogModel.items.isNotEmpty)
+        child: (CatalogModel.items?.isNotEmpty == true)
             ? GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisSpacing: 16,
                 ),
                 itemBuilder: (context, index) {
-                  final item = CatalogModel.items[index];
+                  final item = CatalogModel.items?[index];
                   return Card(
                       clipBehavior: Clip.antiAlias,
                       shape: RoundedRectangleBorder(
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.deepPurple,
                           ),
                           child: Text(
-                            item.name,
+                            item!.name,
                             style: const TextStyle(color: Colors.white),
                           ),
                         ),
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ));
                 },
-                itemCount: CatalogModel.items.length,
+                itemCount: CatalogModel.items?.length,
               )
             : const Center(
                 child: CircularProgressIndicator(),
