@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:my_flutter_practice/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'dart:convert';
 
 import '../models/catalog.dart';
-import '../widgets/home_widgets/catalog_header.dart';
-import '../widgets/home_widgets/catalog_list.dart';
 
 class HomeDetailPage extends StatelessWidget {
   final Item? catalog;
