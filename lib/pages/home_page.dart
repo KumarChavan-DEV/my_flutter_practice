@@ -36,24 +36,27 @@ class _HomePageState extends State<HomePage> {
     // final response = await http.get(Uri.parse(url));
     // // if (response.statusCode == 200) {
     //   final catalogJson = response.body;
-      final decodedData = jsonDecode(catalogJson);
-      var productsData = decodedData["products"];
-      CatalogModel.items = List.from(productsData)
-          .map<Item>((item) => Item.fromMap(item))
-          .toList();
-      setState(() {});
+    final decodedData = jsonDecode(catalogJson);
+    var productsData = decodedData["products"];
+    CatalogModel.items = List.from(productsData)
+        .map<Item>((item) => Item.fromMap(item))
+        .toList();
+    setState(() {});
     // }
   }
 
   @override
   Widget build(BuildContext context) {
+    VKStore store = VxState.store;
     CartModel cartModel = (VxState.store as VKStore).cartModel;
     return Scaffold(
       backgroundColor: context.canvasColor,
       floatingActionButton: VxBuilder(
         mutations: const {AddMutation, RemoveMutation},
         builder: (context, _, __) => FloatingActionButton(
-          onPressed: () => Navigator.pushNamed(context, MyRoutes.cartRoute),
+          onPressed: () =>
+              context.vxNav.push(Uri.parse(MyRoutes.cartRoute))
+              /*store.navigator.routeManager.push(Uri.parse(MyRoutes.cartRoute))*/,
           backgroundColor: context.theme.buttonColor,
           child: const Icon(
             CupertinoIcons.cart,
