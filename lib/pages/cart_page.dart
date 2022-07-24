@@ -1,44 +1,80 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:my_flutter_practice/widgets/themes.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'dart:convert';
 
-import '../models/catalog.dart';
-import '../widgets/home_widgets/catalog_header.dart';
-import '../widgets/home_widgets/catalog_list.dart';
+import '../models/cart.dart';
 
 class CartPage extends StatelessWidget {
-  final int days = 30;
-
-  final String name = "Codepur";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.canvasColor,
       appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Text(
-            "Cart",
-            style: Theme.of(context).appBarTheme.titleTextStyle,
-          )),
-      body: SafeArea(
-        child: Container(
-          padding: Vx.m32,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CatalogHeader(),
-              if (CatalogModel.items != null &&
-                  CatalogModel.items?.isNotEmpty == true)
-                CatalogList().py16().expand()
-              else
-                CircularProgressIndicator().centered().expand(),
-            ],
-          ),
+        backgroundColor: Colors.transparent,
+        title: /*Text(*/
+            "Cart".text.make(),
+        /* style: Theme.of(context).appBarTheme.titleTextStyle,
+          )*/
+      ),
+      body: Column(
+        children: [_CartList().p32().expand(), Divider(), _CartTotal()],
+      ),
+    );
+  }
+}
+
+class _CartTotal extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final _cart = CartModel();
+    return SizedBox(
+      height: 200,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          "\$${_cart.totalPrice}"
+              .text
+              .xl5
+              .color(context.theme.accentColor)
+              .make(),
+          30.widthBox,
+          ElevatedButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: "Buying not supported yet!".text.make()));
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(context.theme.buttonColor)),
+            child: "Buy".text.white.make(),
+          ).w32(context)
+        ],
+      ),
+    );
+  }
+}
+
+class _CartList extends StatefulWidget {
+  const _CartList({Key? key}) : super(key: key);
+
+  @override
+  State<_CartList> createState() => _CartListState();
+}
+
+class _CartListState extends State<_CartList> {
+  final _cart = CartModel();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: _cart.items.length,
+      itemBuilder: (context, index) => ListTile(
+        leading: Icon(Icons.done),
+        trailing: IconButton(
+          icon: Icon(Icons.remove_circle_outline),
+          onPressed: () {},
         ),
+        title: _cart.items[index]?.name.text.make(),
       ),
     );
   }

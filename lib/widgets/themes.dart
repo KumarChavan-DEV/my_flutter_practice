@@ -45,6 +45,7 @@ class MyTheme {
         appBarTheme: AppBarTheme(
           color: Colors.white,
           elevation: 0.0,
+          centerTitle: false,
           iconTheme: const IconThemeData(color: Colors.white),
           toolbarTextStyle: Theme.of(context).textTheme.bodyText2,
           titleTextStyle: Theme.of(context)
